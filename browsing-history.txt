@@ -1,0 +1,127 @@
+Viewing the History:
+- git log --oneline --stat
+  - This commmand will tell us the files that were changed during a particular commit
+- git log --patch
+  - Tells us what lines have been changed during a commit
+
+Filtering the History:
+- Some of the different options we can filter the history by is author, date, commit message, etc
+- git log --oneline -{number}
+  - This command will show the previous {number} of commits. If we put a 3 then it would show the last 3 commits, etc
+- git log --oneline --author="{name}"
+  - This command will filter the history and show commits based on the author of the commit
+- git log --oneline --{after/before}="YYYY/MM/DD"
+  - This command will show you the commits that were done either before or after a certain day that you specify
+- git log --oneline --grep="{message}"
+  - This command will filter the history based on the commit message. *NOTE* - This operation is case sensative
+- git log --oneline -S"{code}"
+  - This command will filter to show all commits where the message you put in was either added or removed
+- git log --oneline {identifier}..{identifier}
+  - This command will show all of the commits in a particular range of commits based on how they are listed
+- git log --oneline {filename}
+  - This command will show you all of the commits that modified a specific file
+  - If Git complains about the filename then rework the command to be the following: git log --oneline -- {filename}
+- git log --oneline --patch -- {filename}
+ - Shows us all of the changes that were done for all of the various filtered commits
+
+Formatting the Log Output:
+- https://git-scm.com/docs/git-log
+- Sometimes we don't want to see all of the info that's being displayed in the log output and we want to show an abbreviated
+  version of the info. We can do that with a variety of different Git commands
+  - git log --pretty=format:""
+    - Inbetween the quotation marks you can put any number of commands in to show an abbreviated form of the info. The web
+      link at the beginning of this section is a good resource to see the different things that you can put in the command
+
+Aliases:
+- An aliase makes it so that you can configure a longer command to be executed by using a shorter command. For example, lets
+  say with the code above that you had a long configuration command in to show a certain output of the log history, but you
+  didn't want to type in all that info every time you wanted to view the history, that's where an aliase comes in! To create
+  an aliase run the following command:
+  - git config --global alias.{shortcut name} "{standard git command}"
+    - What we do here is we are configuring this shortcut command for all repositories that our particular user is using, which
+      is why we configure it globally. We use the term "alias" to show that we're configuring an alias followed by a period. after
+      the period we're going to put in the name of the shortcut command that we want to run. Following the shortcut name, put in
+      quotation marks the actual command that you're wanting to run. Assuming everything is entered correctly then you will be
+      able to run the git {shortcut name} and have git run the command that you configured
+
+Viewing a Commit:
+- git show HEAD~{number}:{filepath}
+  - Running this command will show the changes to a particluar file based on it's filepath
+  - git show HEAD~{number}:{filepath} --name-status
+    - Shows the status of a file, whether it's modified or not
+  - git show HEAD~{number}:{filepath} --name-only
+    - This command only shows the names of the files, wheter they were added or deleted
+
+Viewing the Changes Across Commits:
+- git diff HEAD~2 HEAD
+  - This command can be modified, but it will show the changes that have happened to different files over a range of commits
+
+Checking Out a Commit:
+- We have the ability to restore our working directory to a prior snapshot that we've done in the past. To do this we will
+  need to run the following command:
+  - git checkout {identifier}
+    - When we run this command we are choosing to run git in a headless state. what this means is that the head identifier, which
+      tells us where we are will now be pointed to a different commit that came before. If we create a new commit when we're
+      running in a detached state then we will eventually lose the commit because it is not at the head of the commits and Git will
+      check for commits like these every once in a while and delete any that exist
+    - We should only do this to look at our code and not to commit any
+  - git checkout master
+    - This will put the head back on the master so that we can start to do commits again and move forward with our project
+
+Finding Bugs using Biscet:
+- Bisect is a powerful tool that we can use to help identify a bad commit that was done to our repository. This command will perform
+  a binary search between a known good and bad commit. To start, run the following command
+  - git bisect start
+    - You will have to mark a commit as a bad one, usually this is the current one. Do this by running the following:
+      - git bisect bad
+    - You will also have to mark a commit as good. You will judge this my identifying a place where you know the bug didn't exist. Run
+      the following command:
+      - git bisect good {identifier}
+        - Replace the identifier with a known good identifier
+  - Git will then checkout a commit in the middle of the list of commits and see if the bug is there. If it's there then you will run
+    the git bisect bad command again, otherwise if the bug is not present then you will run git bisect good
+  - You will repeat the process until Git finds the first bad commit. Once it's found the bad commit then it will show the bad commit
+  - Once you're done running bisect then you will need to run the following command to attach the head back to the master
+    - git bisect reset
+
+Finding Contributors Using Shortlog:
+- git shortlog
+  - This command will tell us all of the people that have contrubted to our project and how many times they've made a commit, as well
+    as the commit messages from the user
+
+Viewing the History of a File:
+- git log {filename}
+  - Running this command will tell us all of the commits that touched the file that we specified in the command
+  - To view everything in a condenced version use the --oneline command
+  - To see the statistics of what was done during each commit use the --stat command
+  - To see the info on the change use the --patch command
+
+Restoring a Deleting File:
+- Sometimes we might accidently delete a file that we actually need. To restore the file we need to first run the following command:
+  - git log --oneline {filename}
+    - Running this command will show us all of the commits that involve the particular file. The most recent one, or the HEAD would be
+      the one that was committed to delete the file. We want to look at the parent commit, which would be the one that was right before
+      the most recent commit and copy the identifier for that commit. Once we have that identifier then we will want to run the following
+      command:
+      - git checkout {identifier} {filename}
+        - This will then add the file from that particular commit back to our directory
+  - Once we add the file back we will have to recommit it to the repository
+
+Find the Author of Line Using Blame:
+- git blame {filename}
+  - This command can be used to see who wrote some code to the particular file that was not written correctly
+
+Tagging:
+- Tags are a way of making a commit stand out, such as wanting to identify a particular commit that represents a new version of an app.
+  To tag a particular commit then we will want to run the following command followed by the unique identifier:
+  - git tag {tag number} {identifier}
+- Once the tag is added, we can use the tag instead of the ID to reference the commit
+- git tag
+  - This command will show all of the tags that we've created
+- git tag -a {tag name} -m "{message}"
+  - This command will create what we call and annotated tag. An annotated tag is a tag that stores extra info such as the taggers name,
+    email, and date as well as a tag message and the commit hash that it points to
+  - git show {tag name}
+    - This command will show all of the info related to the annotated tag
+- git tag -d {tag name}
+  - This command will delete a tag that we've created

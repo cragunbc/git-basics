@@ -1,0 +1,238 @@
+Using the command line to create a file:
+- cd {filename} -> goes into a file
+- cd .. -> Goes up one level in your file structure
+- cd ~ -> Goes to the home directory
+- ls -> Lists all of the files and folders of the directory
+- mkdir {filename} -> Makes a new directory
+- git init -> Initializes a Git repository in the directory
+- ls -a -> Lists all files and folders that are hidden in the current directory
+- pwd -> states what directory you're in
+
+Git Workflow:
+- When we are editing and updating files then Git will store the files in a staging area.
+  Once we've reviewd these changes and everything looks good then we can commit them to
+  our repository
+- We have the ability to unstage a change so that it's not included in the commit (snapshot)
+  if we're wanting to include it in a different commit in the future
+- With each commit we should enter a meaningful message that tells us the state of the
+  project for future reference. This is important for having a useful history
+- Once we commit the changes from the staging area it's important to know that that doesn't
+  clear the staging area of the files that were there. The working directory files that were 
+  there are still there. But if we haven't made a chnage to the files then there's going to
+  be nothing new to commit. If we make a change to the file then we will have to re-add the
+  file to the staging area before commiting the change(s)
+- If we delete a file from our directory it will not be deleted from the staging area. We
+  still have to remove it from the staging area
+- Each commit has a unique identifier (ID), as well as:
+  - The message that was put in with the commit
+  - Date/Time of when the commit was made
+  - Author of who made the commit
+  - Complete Snapshot of our project at the time that it was created
+
+Staging Files:
+- echo hello > file1.txt
+- echo hello > file2.txt
+  - Both of these command lines are using "echo", which is writting the word "hello" to
+    file1.txt and file2.txt for the directory that we're currently in
+- git status
+  - Tells us the status of the working directory as well as the staging area. Running this
+    command will tell us a couple of things:
+    - Whether we have commits
+    - Untracked files (listed in red because they're not in the staging area yet)
+- git add
+  - Adds the files to the staging area
+  - In the example above if all we're working with is text files then we can use git add *.txt
+    to add all of the files from the directory that end with a .txt extension
+  - git add . -> would add all of the files from the directory to the staging area. We can do
+    this but should stay away from it becuase there might be some things that we don't wanting
+    to commit to our repository
+  - git add file1.txt file2.txt -> would add the two files to the staging area. If we only listed
+    one of the files then only that one would be commited to the staging area
+  - Once we add the files to the staging area and we run git status again then we will see the
+    files added and they will appear in green, telling us that they are now located in the staging
+    area
+
+Modifying an existing file:
+- echo world >> file1.txt
+  - This is writting the word "world" and appending it to the file1.txt file. That's why we use two
+    greater than signs instead of one since the file already exists
+- If we run the get git status after we modify a file we will see that we still have the two files
+  that we'd put in stage but we would also see that there is a modified file of file1.txt. This is
+  because git doesn't automatically put the changes in the staging area. Since we'd already added
+  the files to the staging area before we made the modification the file1.txt that's in the staging
+  area is an older snapshot of the file. We need to run git add file1.txt to add the new modified
+  file to the staging area
+
+Committing Changes:
+- git commit -m "{message}"
+  - This will commit the staged changes that we've done to our repository
+  - Info that is displayed to us is how many files were changed. In this case it was two since we had
+    file1.txt and file2.txt and we made 3 insertions, or in other worlds, we added 3 lines of text/code,
+    2 in file1.txt and 1 in file2.txt
+
+Committing Best Practices:
+- We don't want our commits to be too large in the sence that we wait a long time and only commit large
+  portions of code. On the other hand we also don't want to do commits that are two small where we do
+  a commit after each file change that we've done. Commit often so that check points and milestones are
+  met. The rule of thumb is to commit when you reach a state that you want to record what you've done,
+  that's when you should commit
+- If while we're working through a bug fix to commit we notice a typo, we shouldn't combine them together
+  into the same commit. We should have one commit for the bug fix and then a seperate one for the typo
+  that was found
+- Make the commit messages mean something. These messages are going to be apart of the history so you want
+  to make sure that what you're putting is meaningful and useful incase someone down the road goes to looks
+  at what you did - make it mean something. Try to stick to using present tense in your commit messages
+
+Skipping the Staging Area:
+- You can skip the staging area. However, you should only do it if you know exactly what you're doing.
+- After making a change to a file run the following commandline prompt:
+  - git commit -am "{message}
+    - The -a is committing all of the modified files that we have
+    - You can also seperate the -am so that it reads:
+      - git commit -a -m "{message}", they both do the same thing
+
+Removing Files:
+- rm {file} - will remove the file that you specify for the current directory that you're in
+- Even after removing the file from our directroy, remember that the file is not automatically updated
+  inside of the staging area. We still have to delete the file from the staging area by adding it.
+  - git add file2.txt
+- After deleting the file from our directory and adding it to the staging area, if we run git status then
+  we will see that the committed change of deleting file2.txt is ready to be committed to the repository
+- git rm {file} - will remove the file from our local directory as well as the staging area
+
+Renaming or Removing Files:
+- mv {current file name} {new file name} - will change the name of one file that exists in the directory
+  and rename it to the new name that you give it
+- After changing the name of the file, if we run git status we will see that there's two changes that are
+  waiting to be staged, one for the deletion of file1.txt and an untracked file of main.js
+- Renaming files is a two step process:
+  - Re-name the file using mv as stated above
+  - Add the old file to the staging area so that it deletes it but also add the new file. After doing this
+    if we run git status then git will recognize that we renamed the file name
+- git mv {current file name} {new file name} - Is the short cut way that git provides so that we can rename
+  the new file without having to go through the two step process, and it updates the change for not only the
+  working directory that we're in but also the staging area.
+
+Ignoring Files:
+- If we want to ignore a file then we will need to create a .gitignore file. What this file does is you have the
+  ability to list certain files that you want Git to not notice so that it doesn't get added to your repository
+- If we accidentely add a file to our repository that we later add to .getignore then git won't ignore it because
+  it wasn't ignoring it to begin with
+- If we want to only remove a file from the staging area but keep it in our working directory then we need to run
+  the following code:
+  - git rm --cached -r {file name}
+- To see the list of different .gitignore files for different programming languages go to the following website:
+  - https://github.com/github/gitignore
+
+Short Status:
+- Much like other commands that we can use with Git there's a shortcut to get the status which is:
+  - git status -s
+- Let's say we were to modify file1.js by adding text to it and creating a new file that has text in it. If we were
+  to run the git status -s command we would see the listing of the two files. Of the one that already existed that
+  we modified we'd see a red "M" next to it, meaning that we've modified the file but that it's not in the staging
+  area yet. With the new file that we created we'd see two red question marks next to it, meaning that there's a file
+  that we have that is not currently being tracked
+  - If we add file1.js to the staging area and run git status -s again then we would now see a green "M" next to the
+    file meaning that the modified file that we had is now added to the staging area
+  - If we were to modify the file1.js file again and then run the git status -s command again we would see a green "M"
+    and a red "M" next to the file. This means that there are changes that are uploaded to the staging area, but that
+    we also have new changes that have not been committed to the staging area
+- Since file2.js is a new file, if we add it to the staging area and run the git status -s command again we'll see a
+  green "A" saying that the file has been added to the staging area
+
+Viewing Staged and Unstaged Changes:
+- git diff --staged
+  - Running this command allows us to be able to see and check the code that we're going to commit to our respository
+    before we actually commit it. It's in a sence, a code review
+  - Now, running this command and comparing code in the terminal window instead of in a visual tool is not ideal, but
+    is necessary to know incase a visual tool is not available
+  - When we run this command the first thing that we'll see at the top of the window is the first file that we're looking
+    to compare if we're currently trying to commit multiple files. We'll see the same file listed twice, but one will have
+    and a/ in front of it, and the other will have a /b in front of it. The first file that has a /a in front of it is the
+    old file that was committed previously, and the file that has the /b in front of it is the new file that is in the
+    staging area that is going to be committed
+    - Underneath the line that shows the old and new file is some metadata that we don't need to be concerned about
+    - Under the metadata is a legend that shows changes were made to the old file by having 3 -'s (---) next to the old file,
+      and changes were made to the new file by having 3 +'s (+++) next to the new file
+    - Under the legend there is a header that shows what parts of the file has changed
+      - The header will show info about the old file and the new file. It starts off with a -1 which has info about the old
+        file and a +1 to show changes to the new copy. If we had -1,3 +1,5 the code would show that starting from line 1 in
+        the old copy it would show everything in lines 1-3 and in the new copy it would show everything from lines 1-5. Likely
+        in this case there would be two lines that have a green + next to them, this would show the additional two lines that
+        are in the new copy that were not in the old copy
+- git diff
+  - Running this command will show the difference between the files that are in our working directory and those that are in the
+    staging area
+
+Visual Diff Tools:
+- It's far easier to view the changes in our code using a visual editor. We can configure Visual Studio Code to be the default
+  editor that we want to use by running the following command:
+  - git config --global difftool.vscode.cmd "code --wait --diff $LOCAL $REMOTE". Break down is below of this command
+    - git config --global
+      - What this does is configure globaly, so for all repositories for the user that you're signed in for
+    - difftool.vscode.cmd
+      - This configures Visual Studio to be the default editor when it comes to viewing code changes
+    - code
+      - This is the command to launch Visual Studio Code
+    - --wait
+      - This tells Git to wait until the window in Visual Studio Code is closed before moving forward with any changes. This is
+        important as no changes will be made too someone
+    - --diff $LOCAL $REMOTE
+      - Opens the older version ($LOCAL) and the newer version ($REMOTE) in diff mode
+
+Viewing History:
+- git log
+  - This command will show the history of the commits that have happened that include the author as well as the date/time and
+    commit message that was included. Most recent commits will be at the top of the screen
+  - To view more of the commits as there will probably be multiple pages of commits, click the space button
+  - To quit the log press "q"
+- git log --oneline
+  - Shows an abreviated version of the commits that only shows the commit message
+- git log --oneline --reverse
+  - Does the same thing as the command above but just reverses the order so that the most recent commit is at the bottom instead
+    of at the top
+
+Viewing a Commit:
+- git show
+  - This command will show the info of what was changed in a given commit. There are a couple of different ways that we can do this
+    - git show {identifier}
+      - If we use the unique identifier that is attached to each commit we can view the details of the commit
+    - git show HEAD~1
+      - If we use this command the "HEAD" which will identify the most recent commit. HEAD~1 says that we want to go one step back
+        from the most recent change
+  - Running either of these commands will show us the following info:
+    - The author of the commit
+    - The date/time of the commit
+    - The commit message
+    - What file(s) was changed as well as what the changes were to the files
+- git show {HEAD~{number}/{identifier}}:{file}
+  - This command whether we use the HEAD command or the unique identifier followed by a colon and the filename will show use the
+    exact code that was stored in this file commit
+git ls-tree {HEAD~{number}/{identifier}}
+  - This command will show us all of the files that were included in this particular commit
+- Blobs are files and Trees are directories
+
+Unstaging Files:
+- git restore --staged {filename}
+  - This command will remove changes from one or more files from the staging area and put it back in the working directory. In
+    addition to removing it from the staging area Git will go and get the snapshot from the prior commit and put it in the staging
+    area so that there is a copy of the file in the staging area
+  - If we remove a file from the staging area that is a brand new file that has not been uploaded to our repository yet then it will
+    restore that file to an untracked file since there's no copy of the file in the respository that Git can put in the staging area
+
+Discarding Local Changes:
+- git restore {./filename} - You can use a period for all files in the directory or you can list off the file name
+  - Using this command will take code that is in our working directory that we want to throw away and not include in the staging area
+    and will replace the file that's in your working directory with the copy that was in the last commit that we did
+- git clean
+  - This command with remove any files that are untracked. The reason why we have to use this file is because when we tell Git to
+    restore a new file there's nothing to pull from since a prior version of the file was not included in any commit.
+  - git clean -fd
+    - This command will for Git to remove files and directories
+
+Restoring a File to an Earlier Version:
+- Sometimes we might accidentely delete a file that we didn't mean to. In order to restore a file to a previous version we will need
+  to run the following command:
+  - git restore --source=HEAD~1 file1.js
+    - This is telling Git to restore the file that is one step back from the HEAD or the most recent commit. Since the change of
+      deleting the file would've been one of the most recent changes we want to go one step back from that change 

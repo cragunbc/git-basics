@@ -1,0 +1,87 @@
+What is Git?
+- Git is the most popular version control system used in the world
+
+What is Version Control?
+- A Version control system records the changes that are made to our code over time and
+  stores those changes in a special database called a repository
+
+Benefits of Version Control?
+- Version control has 2 main pros: 1. Tracking history and 2. Working with others efficently
+  - Tracking History: Using a version control system allows the history of changes that
+    have been made to the code to be documented so that you know who made the change, and
+    if you need to revert to an older version of the code, version control makes it easy
+    to go back to a prior version
+  - Working with others: Using a version control system makes it so that collaboration with
+    other users is more streamlined and simple. Since everyone is working out of the same
+    repository the process of working on code and merging it with others is a far more
+    simple process then manually send code to someone that will have to merge the code
+    manually. In an essence, it also saves a lot of time when developing code and
+    applications
+
+Different categories of version control?
+- Centralized: In a centralized system everyone is working from the same server. However,
+               in a centralized system if the server were to go down then no one would
+               be able to continue working since access to the server would be disconnected.
+               This is also known as a single point of failure, and we'd have to wait for
+               the server to come back online in order for us to do anything
+- Distributed: In a distributed system everyone has a copy of the code on their local
+               machine that they're working off of. If the central server happens to be
+               offline, we're still able to syncranize our work with others using a program
+               such as Git
+
+What are the different ways of using Git?
+- The command line: The command line provides the quickest way of using Git and sometimes
+  the easiest way to get the job done
+- Code editors and IDE's: Programs such as Visual Studio Code have a source control panel
+  on the left hand side of the screen that connects to your GitHub repository that can
+  also make it quick and easy to stage changes and push them to your repository
+- Graphical User Interfaces (GUI's): GitKraken and SourceTree and examples of user interfaces
+  that utilize Git. However, one thing to keep in mind is that Graphical User Interfaces
+  have their limitations and don't provide all of the features that Git provides. GUI tools
+  may not be available based on your circumstance, so knowing how to use it on the command
+  line is the most benefical way
+
+When we download Git we need to configure a few settings first:
+- Name
+- Email
+- Default Editor
+- Line Ending
+
+Along with the configuration there's three different levels that we can configure settings:
+- System: This would apply to all users on the computer system
+- Global: This would apply to all repositories that are attached to the specific user
+- Local: This would apply to the current repository that you're working on or the repository
+         in the current folder
+
+It's important to know that we can have different Git settings for different repositories
+or different projects based upon how we set up the settings above
+
+Setting up global settings using the terminal:
+- git config --global user.name "{name}"
+  - Replace {name} with your own first and last name. The reason it's in double quotes is
+    because there is a space between your first and last name
+- git config --global user.email {email}
+  - Replace {email} with your email
+  - Since there's no space in the email we don't have to put the email in double quotes
+- git config --global core.editor "code --wait"
+  - This sets visual studio code as your default editor. You will have to make sure the
+    Visual Studio Code is added to your path on your computer. "code" is the key word to
+    identify Visual Studio Code "--wait" tells Visual Studio Code to pause and let Git wait
+    until you close the editor window before continuing. If you don't use "--wait", Git
+    would link that you're done immediately and likely proceed before you've written
+    anything
+- git config --global -e
+  - Running this command will allow you to edit the global settings using our default editor
+- git config --global core.autocrlf (true - if on Windows) or (input - if on Mac)
+  - Running this command tells Git how to handle line endings (carriage return + line feed
+  , or CRLF vs LF) when you're checking files in and out of your repository
+    - For Windows:
+      - Convert CRLF -> LF when committing files to a repository
+      - Convert LF -> CRLF when checking files out to your working directory
+    - For Mac/Linux:
+      - Convert CRLF -> LF when committing files to the repository
+      - Do nothing (no conversion) when checking files out
+- git config --help
+  - Pulls up a help article for understanding the different Git config commands
+- git config -h
+  - Pulls up a more simple version of the git config commands
