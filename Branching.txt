@@ -1,0 +1,94 @@
+What are Branches:
+- Branches allow us to remove ourselves from the main line of work and work on something in isolation
+- Branches allow us to work on different features without disrupting the main line of work
+
+Working with Branches:
+- git branch {branch name}
+  - This command will create a branch with the given name that we choose
+  - Make sure that the name of the branch is unique so that others can easily see what the branch is
+    trying to fix
+- git branch
+  - Shows all of the branches for our repository
+- git switch {branch name}
+  - Switches to a different branch in the respository
+- git branch -m {old branch name} {new branch name}
+  - This command will rename the branch of our choosing
+- git log --oneline -all
+  - This command will let you see all of the commits including branches that are coming after the master
+- git branch -d {branch name}
+  - This command will delete a branch. If there's changes on the branch that haven't been merged to the
+    master branch then you will have to re run the command using a capital "D"
+
+Comparing Branches:
+- git log master..{branch name}
+  - This command will show all of the commits that are in the specific branch but not in master
+- git diff master..bugfix/signup-form
+  - This command will show you the actual changes that will occure between the branch and the master
+- git diff --name-status {branch name}
+  - This command will tell you the names of the files that are going to be effected with two branches are merged
+
+Stashing:
+- Stashing/storing changes is where we've made some changes to our local directory that we're not ready to commit
+  but we need to do something about them before we switch to a different branch, otherwise the changes might be
+  lost
+- git stash list
+  - Shows the list of all the stashes that we have
+- git stash show {number}
+  - Replace number with the stash that you're wanting to look at
+  - This command will show you the changes that will be made when adding a stash to the branch
+- git stash apply {number}
+  - Just like above, the number will be replaced with the stash number
+  - This command will apply the changes in the stash to the current branch
+- git stash drop {number}
+  - Replace number with the stash number
+  - This command will drop the stash. We should do this once the changes from the stash are applied to the branch
+- git stash clear
+  - This command removes all of the stashes at once
+
+Merging:
+- Merging is about bring changes from one branch to another. There are two different kinds of merges in Git:
+  - Fast-forward merges - Essentially fast-forward merging is where after we're done working on a branch we rename
+                          the branch to be the master branch. We can do this because we can assume that the first
+                          version of the branch is the same as the master branch, so by renaming the branch to master
+                          it's not going to change any of the code that already exists in the master branch
+  - 3-way merges - Essentially a 3-way merge is where we've made a change to the master branch after the fact, since
+                   we created the new branch. In this case we can't do a fast forward merge because the new version of
+                   the master branch is different from the first version of the branch that we created. In this case Git
+                   will do a 3-way merge where it will create a new commit and pull from 3 different code sources,
+                   1. The common file which would be the original version of the master file that existed when we created
+                   our branch, 2. The new version of the master branch, 3. The current state of the branch we've been
+                   working on
+- git merge {branch name}
+  - This command (Assuming that we're on the master branch) will merge the branch that we specify with the master branch
+- git log --oneline --all --graph
+  - This command will show the graph of where the different branches are in relation to the master branch
+- git branch --merged
+  - This command will show all of the branches that are currently merged into the branch that we're currently on
+- git branch --no-merged
+  - This command will show all of the other branches that are not merged into the current branch
+- git brand -d {branch name}
+  - This command will delete a branch. Once we've merged the branch into the master branch then there's no reason to keep
+    the branch and we should delete it.
+  - If we happen to not merge the branch into the master and we try to delete it then we'll have to re run the command but
+    use a capital "D"
+
+Merge Conflicts:
+- Conflicts can happen for a couple of different different reasons:
+  - The same code has been changed in two different branches
+  - When a given file is changed in one branch but deleted in another
+  - When two of the same files are added to two different branches but the content is different
+- When we run into any of these conflicts Git won't know how to deal with the conflict, so we have to help it out
+- When we are going to merge a conflict using a tool say Visual Studio Code we have a couple of different options:
+  - Accept the current change
+  - Accept the incoming change
+  - Accept both changes
+- If we have to manually fix the issue then we want to avoid adding in any new code since the new code was not apart of
+  either branch. This could introduce issues. Always try to not add new code when merging branches
+
+Aborting a Merge:
+- Sometimes for some reason we want to stop a merge and go back to the state that we were in before we started the merge. 
+  We can do this by running the following command:
+  - git merge --abort
+
+Undoing a Faulty Merge:
+- 
